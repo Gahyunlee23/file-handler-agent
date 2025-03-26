@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  file-handler:
+    build: .
+    ports:
+      - "8080:7070"
+    volumes:
+      - ./temp:/app/temp
+    environment:
+      - GS_PATH=/usr/bin/gs
+    restart: unless-stopped
