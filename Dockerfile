@@ -1,29 +1,25 @@
-# Build stage
-FROM golang:1.19-alpine AS builder
+FROM golang:1.23-alpine
 
 WORKDIR /app
 
+# Install dependencies
+RUN apk add --no-cache git build-base ghostscript
+
+# Install air
+RUN go install github.com/air-verse/air@latest
+
+# Prepare directories
+RUN mkdir -p /app/temp/input /app/temp/output
+
+# Copy Go modules first for better caching
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy the rest of the code
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /file-handler-agent ./cmd/server
-
-# Final stage
-FROM alpine:3.16
-
-# install Ghostscript
-RUN apk add --no-cache ghostscript
-
-# work dir
-WORKDIR /app
-RUN mkdir -p /app/temp/input /app/temp/output
-
-# copy binery
-COPY --from=builder /file-handler-agent /app/
 
 # expose port
-EXPOSE 8080
+EXPOSE 7701
 
-# execute
-CMD ["/app/file-handler-agent"]
+# execute with air
+CMD ["air", "-c", ".air.toml"]

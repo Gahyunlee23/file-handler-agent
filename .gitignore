@@ -44,3 +44,4 @@ config.json
 # Temporary files
 *.tmp
 *.swp
+/temp/input

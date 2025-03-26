@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -58,6 +59,11 @@ func (g *GhostscriptAgent) convertPdfToImage(ctx context.Context, params map[str
 		pages = "1"
 	}
 
+	outputDir, _ := params["output_dir"].(string)
+	if outputDir == "" {
+		outputDir = "output"
+	}
+
 	var outputFiles []string
 
 	for _, inputFile := range files {
@@ -67,7 +73,9 @@ func (g *GhostscriptAgent) convertPdfToImage(ctx context.Context, params map[str
 
 		baseName := filepath.Base(inputFile)
 		baseNameWithoutExt := strings.TrimSuffix(baseName, filepath.Ext(baseName))
-		outputPattern := filepath.Join(g.OutputDir, fmt.Sprintf("%s-%%d.%s", baseNameWithoutExt, imageFormat))
+		outputPattern := filepath.Join(outputDir, fmt.Sprintf("%s-%%d.%s", baseNameWithoutExt, imageFormat))
+		log.Printf("output directory: %s", outputDir)
+		log.Printf("output pattern: %s", outputPattern)
 
 		args := []string{
 			"-dNOPAUSE",
@@ -100,6 +108,7 @@ func (g *GhostscriptAgent) convertPdfToImage(ctx context.Context, params map[str
 
 		// get generated directory
 		pattern := strings.Replace(outputPattern, "%d", "*", 1)
+
 		matches, err := filepath.Glob(pattern)
 		if err != nil {
 			return nil, err

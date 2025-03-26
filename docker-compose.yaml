@@ -1,12 +1,17 @@
 version: '3'
 
 services:
-  file-handler:
-    build: .
+  go:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: file-handler-benchmark
+    container_name: file-handler-benchmark
     ports:
-      - "8080:7070"
+      - "7701:7701"
     volumes:
-      - ./temp:/app/temp
+      - .:/app
     environment:
       - GS_PATH=/usr/bin/gs
+      - PORT=7701
     restart: unless-stopped

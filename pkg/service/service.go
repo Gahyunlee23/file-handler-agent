@@ -13,11 +13,22 @@ type FileRequest struct {
 	Files      []string               `json:"files"`
 }
 
+type Message struct {
+	ID     string `json:"id"`
+	Result Result `json:"result"`
+}
+
+type Result struct {
+	OutputFiles        []string `json:"output_files"`
+	RawProcessorOutput string   `json:"raw_processor_output"`
+	MetaData           []string `json:"metadata"`
+}
+
 // FileResponse struct file response data
 type FileResponse struct {
-	Success bool     `json:"success"`
-	Files   []string `json:"files"`
-	Error   string   `json:"error,omitempty"`
+	Success bool    `json:"success"`
+	Message Message `json:"message"`
+	Error   string  `json:"error,omitempty"`
 }
 
 // HealthResponse struct health response data
