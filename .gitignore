@@ -1,0 +1,46 @@
+# Go-related
+/bin/
+/vendor/
+/tmp/
+
+# Module cache and build files
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Environment files (may contain sensitive information)
+.env
+config/config.yaml
+config.json
+/config.yaml
+
+# JetBrains IDE-related (e.g., GoLand)
+/.idea
+*.iml
+*.iws
+
+# macOS-related
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# System-specific files
+.Spotlight-V100
+.Trashes
+
+# gorm sqlite-related (if applicable)
+*.db
+*.sqlite3
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.swp
