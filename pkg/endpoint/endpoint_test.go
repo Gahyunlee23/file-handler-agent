@@ -21,12 +21,16 @@ func (m *MockService) Health(ctx context.Context) (service.HealthResponse, error
 }
 
 func TestProcessFileEndpoint(t *testing.T) {
-	// 가짜 서비스 생성
 	mockSvc := &MockService{
 		ProcessFileFn: func(ctx context.Context, req service.FileRequest) (service.FileResponse, error) {
 			return service.FileResponse{
 				Success: true,
-				Files:   []string{"output.png"},
+				Message: service.Message{
+					ID: "67e452be630a0",
+					Result: service.Result{
+						OutputFiles: []string{"output/67e452be630a0.png"},
+					},
+				},
 			}, nil
 		},
 	}
@@ -58,8 +62,8 @@ func TestProcessFileEndpoint(t *testing.T) {
 		t.Error("Expected success to be true")
 	}
 
-	if len(fileResp.Files) != 1 || fileResp.Files[0] != "output.png" {
-		t.Errorf("Unexpected files in response: %v", fileResp.Files)
+	if len(fileResp.Message.Result.OutputFiles) != 1 || fileResp.Message.Result.OutputFiles[0] != "output/67e452be630a0.png" {
+		t.Errorf("Unexpected files in response: %v", fileResp.Message.Result.OutputFiles)
 	}
 }
 

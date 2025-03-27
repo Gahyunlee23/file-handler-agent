@@ -22,6 +22,7 @@ type Result struct {
 	OutputFiles        []string `json:"output_files"`
 	RawProcessorOutput string   `json:"raw_processor_output"`
 	MetaData           []string `json:"metadata"`
+	ProcessingTime     string   `json:"processing_time"`
 }
 
 // FileResponse struct file response data
